@@ -11,6 +11,11 @@ namespace peg {
   // they all pass. If one fails, the input is reset to the original position
   template<class... RulesT>
   struct Seq;
+
+  // Star matches a rule 0 or more times, as many times as possible.
+  // This always returns true
+  template<class RuleT>
+  struct Star;
 }
 
 // Or attempts to match each of the passed rules until
@@ -33,6 +38,17 @@ struct peg::Seq {
     bool out = (... && RulesT::template Match(p));
     if (!out) p.set_iter(iter);
     return out;
+  }
+};
+
+// Star matches a rule 0 or more times, as many times as possible.
+// This always returns true
+template<class RuleT>
+struct peg::Star {
+  template<class ParserT>
+  static bool Match(ParserT& p) {
+    if (!p.eof()) while (RuleT::template Match(p));
+    return true;
   }
 };
 

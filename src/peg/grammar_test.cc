@@ -10,11 +10,12 @@ template<bool b, int offset = 0>
 struct Bool {
   template<class ParserT>
   static bool Match(ParserT& p) {
-    if (!p.eof()) p.set_iter(p.iter() + offset);
+    if (!p.eof()) p.set_iter(p.iter() + offset); else return false;
     return b;
   }
 };
 
+// rule is true if not eof
 template <int offset = 0>
 struct True: Bool<true, offset> {};
 struct False: Bool<false> {};
@@ -46,4 +47,12 @@ TEST(PegGrammarTest, Seq) {
   EXPECT_EQ(s, p.iter());
   EXPECT_TRUE((Seq<True<3>, True<5>>::Match(p)));
   EXPECT_EQ(s + 8, p.iter());
+}
+
+TEST(PegGrammarTest, Star) {
+  auto s = "abcdefghijklmno";
+  TextParser p(s, s + std::strlen(s));
+  EXPECT_TRUE((Star<False>::Match(p)));
+  EXPECT_TRUE((Star<True<1>>::Match(p)));
+  EXPECT_TRUE(p.eof());
 }
