@@ -16,6 +16,7 @@ struct peg::BasicParser {
   Iterator iter() { return iter_; }
   void set_iter(Iterator iter) { iter_ = iter; }
   bool eof() { return iter_ >= end_; }
+  void GotoNext() { ++iter_; }
 protected:
   Iterator iter_ = nullptr;
   Iterator end_ = nullptr;

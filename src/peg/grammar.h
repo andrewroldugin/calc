@@ -16,6 +16,12 @@ namespace peg {
   // This always returns true
   template<class RuleT>
   struct Star;
+
+  // used to match the end of file,
+  // probably for checking that there isn't any data there that would
+  // otherwise be ignored by the parser
+  // matching this rule doesn't actually consume the end of file
+  struct Eof;
 }
 
 // Or attempts to match each of the passed rules until
@@ -49,6 +55,17 @@ struct peg::Star {
   static bool Match(ParserT& p) {
     if (!p.eof()) while (RuleT::template Match(p));
     return true;
+  }
+};
+
+// used to match the end of file,
+// probably for checking that there isn't any data there that would
+// otherwise be ignored by the parser
+// matching this rule doesn't actually consume the end of file
+struct peg::Eof {
+  template<class ParserT>
+  static bool Match(ParserT& p) {
+    return p.eof();
   }
 };
 

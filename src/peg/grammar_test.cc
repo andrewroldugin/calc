@@ -56,3 +56,11 @@ TEST(PegGrammarTest, Star) {
   EXPECT_TRUE((Star<True<1>>::Match(p)));
   EXPECT_TRUE(p.eof());
 }
+
+TEST(PegGrammarTest, Eof) {
+  auto s = "A";
+  TextParser p(s, s + 1);
+  EXPECT_FALSE((Eof::Match(p)));
+  p.GotoNext();
+  EXPECT_TRUE((Eof::Match(p)));
+}
