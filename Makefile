@@ -17,6 +17,10 @@ $(TESTS): src/main_tests
 	$(CP)
 
 src/main_tests: LDLIBS += -lgtest
+src/main_tests: src/main_tests.o src/peg/grammar_test.o
+
+src/peg/grammar_test.o: src/peg/grammar_test.cc src/peg/grammar.h \
+src/peg/parser.h
 
 test: $(TESTS)
 	@./$<
