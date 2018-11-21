@@ -4,7 +4,7 @@
 namespace peg {
   // Or attempts to match each of the passed rules until
   // one is found successful.
-  template<class FirstRuleT, class SecondRuleT, class... RestRulesT>
+  template<class... RulesT>
   struct Or;
 
   // Seq attempts to match each of the passed rules, sequentially until
@@ -15,12 +15,11 @@ namespace peg {
 
 // Or attempts to match each of the passed rules until
 // one is found successful.
-template<class FirstRuleT, class SecondRuleT, class... RestRulesT>
+template<class... RulesT>
 struct peg::Or {
   template<class ParserT>
   static bool Match(ParserT& p) {
-    return FirstRuleT::template Match(p) || SecondRuleT::template Match(p)
-      || (... || RestRulesT::template Match(p));
+    return (... || RulesT::template Match(p));
   }
 };
 

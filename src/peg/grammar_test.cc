@@ -22,6 +22,9 @@ struct False: Bool<false> {};
 TEST(PegGrammarTest, Or) {
   auto s = "abcdefghijklmno";
   TextParser p(s, s + std::strlen(s));
+  EXPECT_FALSE((Or<>::Match(p)));
+  EXPECT_FALSE((Or<False>::Match(p)));
+  EXPECT_TRUE((Or<True<> >::Match(p)));
   EXPECT_TRUE((Or<True<4>, True<5> >::Match(p)));
   EXPECT_EQ(s + 4, p.iter());
   EXPECT_TRUE((Or<False, True<> >::Match(p)));
