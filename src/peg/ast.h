@@ -67,6 +67,12 @@ public:
       delete node;
     }
 
+    // return true if the associated rule type matches the template parameter
+    template<typename T>
+    bool TypeMatches() {
+      return GetRuleTypeInfo() == typeid(T);
+    }
+
     virtual const std::type_info& GetRuleTypeInfo() = 0;
 
     AbstractNode* child() { return child_; }
