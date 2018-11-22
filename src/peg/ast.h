@@ -52,8 +52,7 @@ public:
       end_ = end;
     }
 
-    // This function only allows deletion of the last child
-    // in a list.
+    // This function only allows deletion of the last child in a list.
     void DeleteChild(AbstractNode* node) {
       if (node == child_) {
         child_ = nullptr;
@@ -98,29 +97,28 @@ public:
     }
   };
 
-  // CreateNode is called when an attempt is made to match a
-  // Store production rule
-  AbstractNode* root() { return &root_; }
+  // CreateNode is called when an attempt is made to match a Store rule
   template<class RuleT, class ParserT>
   void CreateNode(ParserT& p) {
     current_ = current_->template NewChild<RuleT>(p.iter());
   }
 
-  // Complete is called when a Store production rule
-  // is successfully matched
+  // Complete is called when a Store rule is successfully matched
   template<class ParserT>
   void CompleteNode(ParserT& p) {
     current_->Complete(p.iter());
     current_ = current_->parent();
   }
 
-  // AbandonNode is called when a Store production rule fails to match
+  // AbandonNode is called when a Store rule fails to match
   template<class ParserT>
   void AbondonNode(ParserT&){
     auto node = current_;
     current_ = current_->parent();
     current_->DeleteChild(node);
   }
+
+  AbstractNode* root() { return &root_; }
 private:
   TypedNode<void> root_;
   AbstractNode* current_ = &root_;
