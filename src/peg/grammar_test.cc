@@ -26,15 +26,17 @@ TEST(PegGrammarTest, Or) {
   EXPECT_FALSE((Or<>::Match(p)));
   EXPECT_FALSE((Or<False>::Match(p)));
   EXPECT_TRUE((Or<True<> >::Match(p)));
-  EXPECT_TRUE((Or<True<4>, True<5> >::Match(p)));
-  EXPECT_EQ(s + 4, p.iter());
   EXPECT_TRUE((Or<False, True<> >::Match(p)));
   EXPECT_TRUE((Or<True<> , False>::Match(p)));
   EXPECT_TRUE((Or<False, False, False, True<> >::Match(p)));
-  EXPECT_TRUE((Or<True<4>, True<5>, True<6> >::Match(p)));
-  EXPECT_EQ(s + 8, p.iter());
   EXPECT_FALSE((Or<False, False>::Match(p)));
   EXPECT_FALSE((Or<False, False, False, False>::Match(p)));
+
+  // check order
+  ASSERT_TRUE((Or<True<4>, True<5> >::Match(p)));
+  ASSERT_EQ(s + 4, p.iter());
+  ASSERT_TRUE((Or<True<4>, True<5>, True<6> >::Match(p)));
+  ASSERT_EQ(s + 8, p.iter());
 }
 
 TEST(PegGrammarTest, Seq) {
@@ -44,8 +46,8 @@ TEST(PegGrammarTest, Seq) {
   EXPECT_FALSE((Seq<False>::Match(p)));
   EXPECT_FALSE((Seq<True<5>, False>::Match(p)));
   // iter must be restored after failed sequence
-  EXPECT_EQ(s, p.iter());
-  EXPECT_TRUE((Seq<True<3>, True<5>>::Match(p)));
+  ASSERT_EQ(s, p.iter());
+  ASSERT_TRUE((Seq<True<3>, True<5>>::Match(p)));
   EXPECT_EQ(s + 8, p.iter());
 }
 
