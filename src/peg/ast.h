@@ -38,8 +38,7 @@ public:
 
     void AddChild(AbstractNode* child) {
       *last_child_ptr_ = child;
-      auto next = child->next();
-      last_child_ptr_ = &next;
+      last_child_ptr_ = &child->next_;
     }
 
     template<class RuleT>
@@ -53,12 +52,19 @@ public:
       end_ = end;
     }
 
-    void DeleteChild(AbstractNode* child) {
-      if (child == child_) {
-        delete child;
+    // This function only allows deletion of the last child
+    // in a list.
+    void DeleteChild(AbstractNode* node) {
+      if (node == child_) {
         child_ = nullptr;
         last_child_ptr_ = &child_;
+      } else {
+        auto before_last = child_;
+        while (before_last->next() != node) before_last = before_last->next();
+        before_last->next_ = nullptr;
+        last_child_ptr_ = &before_last->next_;
       }
+      delete node;
     }
 
     virtual const std::type_info& GetRuleTypeInfo() = 0;
