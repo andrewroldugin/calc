@@ -1,29 +1,39 @@
 #ifndef PEG_PARSER_H
 #define PEG_PARSER_H
 
+#include "peg/ast.h"
+
 namespace peg {
   template<typename TokenT, typename IterT = const TokenT*>
-  struct BasicParser;
+  struct Parser;
   struct TextParser;
 }
 
 template<typename TokenT, typename IterT>
-struct peg::BasicParser {
+struct peg::Parser {
   typedef IterT Iterator;
+  typedef Ast<Iterator> Tree;
+  typedef class Tree::AbstractNode Node;
 
-  BasicParser() = default;
-  BasicParser(Iterator begin, Iterator end): iter_(begin), end_(end) {}
+  Parser(Iterator begin, Iterator end): iter_(begin), end_(end) {}
   Iterator iter() { return iter_; }
   void set_iter(Iterator iter) { iter_ = iter; }
   bool eof() { return iter_ >= end_; }
   void GotoNext() { ++iter_; }
+
+  Node* ast_root() { return ast_.root(); }
+  template<class RuleT>
+  void CreateNode() { ast_.template CreateNode<RuleT>(*this); }
+  void CompleteNode() { ast_.CompleteNode(*this); }
+  void AbondonNode() { ast_.AbondonNode(*this); }
 protected:
   Iterator iter_ = nullptr;
   Iterator end_ = nullptr;
+  Tree ast_;
 };
 
-struct peg::TextParser: peg::BasicParser<char> {
-  using BasicParser::BasicParser;
+struct peg::TextParser: peg::Parser<char> {
+  using Parser::Parser;
 };
 
 #endif  // PEG_PARSER_H

@@ -22,6 +22,9 @@ namespace peg {
   // otherwise be ignored by the parser
   // matching this rule doesn't actually consume the end of file
   struct Eof;
+
+  // Store creates a new ast node if parsing is successful.
+  struct Store;
 }
 
 // Or attempts to match each of the passed rules until
@@ -66,6 +69,18 @@ struct peg::Eof {
   template<class ParserT>
   static bool Match(ParserT& p) {
     return p.eof();
+  }
+};
+
+// Store creates a new ast node if parsing is successful.
+template<class RuleT>
+struct Store {
+  template<class ParserT>
+  static bool Match(ParserT& p) {
+    p.template CreateNode<RuleT>();
+    bool out = RuleT::template Match(p);
+    if (out) p.CompleteNode(); else p.AbondonNode();
+    return out;
   }
 };
 
