@@ -24,6 +24,7 @@ namespace peg {
   struct Eof;
 
   // Store creates a new ast node if parsing is successful.
+  template<class RuleT>
   struct Store;
 }
 
@@ -74,7 +75,7 @@ struct peg::Eof {
 
 // Store creates a new ast node if parsing is successful.
 template<class RuleT>
-struct Store {
+struct peg::Store {
   template<class ParserT>
   static bool Match(ParserT& p) {
     p.template CreateNode<RuleT>();

@@ -64,3 +64,52 @@ TEST(PegGrammarTest, Eof) {
   p.GotoNext();
   EXPECT_TRUE((Eof::Match(p)));
 }
+
+TEST(PegGrammarTest, Store) {
+  auto s = "ABC";
+  TextParser p(s, s + std::strlen(s));
+  EXPECT_TRUE((Store<True<3> >::Match(p)));
+  auto child = p.ast_root()->child();
+  ASSERT_NE(child, nullptr);
+  EXPECT_EQ(child->begin(), s);
+  EXPECT_EQ(child->end(), s + std::strlen(s));
+}
+
+TEST(PegGrammarTest, StoreFailed) {
+  auto s = "ABC";
+  TextParser p(s, s + std::strlen(s));
+  EXPECT_FALSE((Store<False>::Match(p)));
+  auto child = p.ast_root()->child();
+  EXPECT_EQ(child, nullptr);
+}
+
+TEST(PegGrammarTest, StoreNested) {
+  auto s = "ABC";
+  TextParser p(s, s + std::strlen(s));
+  EXPECT_TRUE((Store<Store<True<3> > >::Match(p)));
+  auto child = p.ast_root()->child();
+  ASSERT_NE(child, nullptr);
+  EXPECT_EQ(child->next(), nullptr);
+  EXPECT_EQ(child->begin(), s);
+  EXPECT_EQ(child->end(), s + std::strlen(s));
+
+  ASSERT_NE(child->child(), nullptr);
+  EXPECT_EQ(child->child()->next(), nullptr);
+  EXPECT_EQ(child->child()->begin(), s);
+  EXPECT_EQ(child->child()->end(), s + std::strlen(s));
+}
+
+TEST(PegGrammarTest, StoreComplex) {
+  auto s = "ABCDEF";
+  TextParser p(s, s + std::strlen(s));
+  EXPECT_TRUE((Seq<Store<True<3> >,
+              Or<Store<False>, Store<True<3> > > >::Match(p)));
+  auto child = p.ast_root()->child();
+  ASSERT_NE(child, nullptr);
+  EXPECT_EQ(child->begin(), s);
+  EXPECT_EQ(child->end(), s + 3);
+
+  ASSERT_NE(child->next(), nullptr);
+  EXPECT_EQ(child->next()->begin(), s + 3);
+  EXPECT_EQ(child->next()->end(), s + 6);
+}
