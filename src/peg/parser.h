@@ -6,7 +6,7 @@
 namespace peg {
   template<typename TokenT, typename IterT = const TokenT*>
   struct Parser;
-  struct TextParser;
+  typedef Parser<char> TextParser;
 }
 
 template<typename TokenT, typename IterT>
@@ -30,10 +30,6 @@ protected:
   Iterator iter_ = nullptr;
   Iterator end_ = nullptr;
   Tree ast_;
-};
-
-struct peg::TextParser: peg::Parser<char> {
-  using Parser::Parser;
 };
 
 #endif  // PEG_PARSER_H
