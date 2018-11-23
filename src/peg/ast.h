@@ -110,7 +110,7 @@ public:
   }
 
   // AbandonNode is called when a Store rule fails to match
-  void AbondonNode() {
+  void AbandonNode() {
     auto node = current_;
     current_ = current_->parent();
     current_->DeleteChild(node);

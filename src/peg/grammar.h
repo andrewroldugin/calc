@@ -80,7 +80,7 @@ struct peg::Store {
   static bool Match(ParserT& p) {
     p.template CreateNode<RuleT>();
     bool out = RuleT::template Match(p);
-    if (out) p.CompleteNode(); else p.AbondonNode();
+    if (out) p.CompleteNode(); else p.AbandonNode();
     return out;
   }
 };
