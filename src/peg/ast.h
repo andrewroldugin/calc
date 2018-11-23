@@ -32,8 +32,7 @@ public:
     }
 
     virtual ~AbstractNode() {
-      delete child_;
-      delete next_;
+      Clear();
     }
 
     void AddChild(AbstractNode* child) {
@@ -70,6 +69,11 @@ public:
     template<typename T>
     bool TypeMatches() {
       return GetRuleTypeInfo() == typeid(T);
+    }
+
+    void Clear() {
+      delete child_; child_ = nullptr;
+      delete next_; next_ = nullptr;
     }
 
     virtual const std::type_info& GetRuleTypeInfo() = 0;
@@ -114,6 +118,10 @@ public:
     auto node = current_;
     current_ = current_->parent();
     current_->DeleteChild(node);
+  }
+
+  void Clear() {
+    root_.Clear();
   }
 
   AbstractNode* root() { return &root_; }
