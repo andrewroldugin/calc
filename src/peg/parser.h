@@ -23,9 +23,9 @@ struct peg::Parser {
 
   Node* ast_root() { return ast_.root(); }
   template<class RuleT>
-  void CreateNode() { ast_.template CreateNode<RuleT>(*this); }
-  void CompleteNode() { ast_.CompleteNode(*this); }
-  void AbondonNode() { ast_.AbondonNode(*this); }
+  void CreateNode() { ast_.template CreateNode<RuleT>(iter_); }
+  void CompleteNode() { ast_.CompleteNode(iter_); }
+  void AbondonNode() { ast_.AbondonNode(); }
 protected:
   Iterator iter_ = nullptr;
   Iterator end_ = nullptr;

@@ -17,13 +17,13 @@ namespace peg {
 template<typename IterT>
 class peg::Ast {
 public:
+  typedef IterT Iterator;
+
   template<class RuleT>
   class TypedNode;
 
   class AbstractNode {
   public:
-    typedef IterT Iterator;
-
     AbstractNode() = default;
     // the node is not completely constructed until the children-nodes
     // are manually added and Complete(...) is called
@@ -98,21 +98,19 @@ public:
   };
 
   // CreateNode is called when an attempt is made to match a Store rule
-  template<class RuleT, class ParserT>
-  void CreateNode(ParserT& p) {
-    current_ = current_->template NewChild<RuleT>(p.iter());
+  template<class RuleT>
+  void CreateNode(Iterator begin) {
+    current_ = current_->template NewChild<RuleT>(begin);
   }
 
   // Complete is called when a Store rule is successfully matched
-  template<class ParserT>
-  void CompleteNode(ParserT& p) {
-    current_->Complete(p.iter());
+  void CompleteNode(Iterator end) {
+    current_->Complete(end);
     current_ = current_->parent();
   }
 
   // AbandonNode is called when a Store rule fails to match
-  template<class ParserT>
-  void AbondonNode(ParserT&){
+  void AbondonNode() {
     auto node = current_;
     current_ = current_->parent();
     current_->DeleteChild(node);
