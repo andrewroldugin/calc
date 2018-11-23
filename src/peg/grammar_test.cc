@@ -115,3 +115,9 @@ TEST(PegGrammarTest, StoreComplex) {
   EXPECT_EQ(child->next()->begin(), s + 3);
   EXPECT_EQ(child->next()->end(), s + 6);
 }
+
+TEST(PegGrammarTest, TypeMatches) {
+  TextParser::Tree::TypedNode<False> node;
+  EXPECT_TRUE(node.TypeMatches<False>());
+  EXPECT_FALSE(node.TypeMatches<True<> >());
+}
