@@ -1,16 +1,19 @@
 #ifndef PEG_PARSER_H
 #define PEG_PARSER_H
 
+#include <cstring>
+
 #include "peg/ast.h"
 
 namespace peg {
   template<typename TokenT, typename IterT = const TokenT*>
-  struct Parser;
-  typedef Parser<char> TextParser;
+  class Parser;
+  class TextParser;
 }
 
 template<typename TokenT, typename IterT>
-struct peg::Parser {
+class peg::Parser {
+public:
   typedef IterT Iterator;
   typedef Ast<Iterator> Tree;
   typedef class Tree::AbstractNode Node;
@@ -39,6 +42,15 @@ protected:
   Iterator iter_ = nullptr;
   Iterator end_ = nullptr;
   Tree ast_;
+};
+
+class peg::TextParser: public Parser<char> {
+public:
+  using Parser::Parser;
+  template<class RuleT>
+  bool Parse(const char* s) {
+    return Parse<RuleT>(s, s + std::strlen(s));
+  }
 };
 
 #endif  // PEG_PARSER_H
