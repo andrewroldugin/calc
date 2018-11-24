@@ -27,11 +27,11 @@ int calc::EvalNode(TextParser::Node* node) {
     out = EvalNode(operand);
     while (auto op = operand->next()) {
       operand = op->next();
-      if (op->TypeMatches<calc::Add>()) {
+      if (op->TypeMatches<Add>()) {
         out += EvalNode(operand);
-      } else if (op->TypeMatches<calc::Sub>()) {
+      } else if (op->TypeMatches<Sub>()) {
         out -= EvalNode(operand);
-      } else if (op->TypeMatches<calc::Mul>()) {
+      } else if (op->TypeMatches<Mul>()) {
         out *= EvalNode(operand);
       } else {
         out /= EvalNode(operand);
