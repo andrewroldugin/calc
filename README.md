@@ -4,7 +4,7 @@ Run interactive mode by running (`-a` or `--ast` key for AST printing)
 ```
 ./calc
 ```
-or use pepared test data:
+or use prepared test data:
 ```
 ./calc < data/test.txt
 ```
