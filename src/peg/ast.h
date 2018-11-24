@@ -74,6 +74,7 @@ public:
     void Clear() {
       delete child_; child_ = nullptr;
       delete next_; next_ = nullptr;
+      last_child_ptr_ = &child_;
     }
 
     virtual const std::type_info& GetRuleTypeInfo() = 0;
