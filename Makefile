@@ -14,6 +14,8 @@ all: $(PRJ) $(TESTS)
 $(PRJ): src/main
 	$(CP)
 
+src/main: src/main.o $(OBJ)
+
 $(TESTS): src/main_tests
 	$(CP)
 
