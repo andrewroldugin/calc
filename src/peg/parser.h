@@ -30,7 +30,9 @@ public:
     iter_ = begin;
     end_ = end;
     ast_.Clear();
-    return RuleT::Match(*this);
+    bool out = RuleT::Match(*this);
+    if (!out) ast_.Clear();
+    return out;
   }
 
   Node* ast_root() { return ast_.root(); }
@@ -49,7 +51,7 @@ public:
   using Parser::Parser;
   template<class RuleT>
   bool Parse(const char* s) {
-    return Parse<RuleT>(s, s + std::strlen(s));
+    return Parser::Parse<RuleT>(s, s + std::strlen(s));
   }
 };
 

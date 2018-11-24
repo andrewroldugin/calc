@@ -116,6 +116,12 @@ TEST(PegGrammarTest, StoreComplex) {
   EXPECT_EQ(child->next()->end(), s + 6);
 }
 
+TEST(PegGrammarTest, CleanAstOnParseFail) {
+  TextParser p;
+  EXPECT_FALSE((p.Parse<Seq<Store<True<> >, False > >("a")));
+  EXPECT_EQ(p.ast_root()->child(), nullptr);
+}
+
 TEST(PegGrammarTest, TypeMatches) {
   TextParser::Tree::TypedNode<False> node;
   EXPECT_TRUE(node.TypeMatches<False>());
