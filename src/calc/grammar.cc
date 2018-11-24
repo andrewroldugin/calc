@@ -20,9 +20,10 @@ void calc::PrintNode(TextParser::Node* node, int offset) {
 int calc::EvalNode(TextParser::Node* node) {
   if (!node) return 0;
   int out = 0;
-  auto operand = node->child();
-  if (!operand) out = std::stoi(std::string(node->begin(), node->end()));
+  if (node->TypeMatches<Number>())
+    out = std::stoi(std::string(node->begin(), node->end()));
   else {
+    auto operand = node->child();
     out = EvalNode(operand);
     while (auto op = operand->next()) {
       operand = op->next();
