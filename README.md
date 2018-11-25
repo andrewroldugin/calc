@@ -13,30 +13,30 @@ or use prepared test data:
 $ ./calc --ast
 Enter math expression followed by Enter key
 or Ctrl-C to exit
-2+5+3*4
-2+5+3*4 = 19
-............2.
-............N4calc6NumberE
-.........2.
-.........N4calc7ProductE
-.........+.
-.........N4calc3AddE
-............5.
-............N4calc6NumberE
-.........5.
-.........N4calc7ProductE
-.........+.
-.........N4calc3AddE
-..............3.
-..............N4calc6NumberE
-..............*.
-..............N4calc3MulE
-..............4.
-..............N4calc6NumberE
-.........3*4.
-.........N4calc7ProductE
-2+5+3*4.
+2+5+ 3 * 4
+2+5+ 3 * 4 = 19
+2+5+ 3 * 4.
 N4calc3SumE
+............2.
+............N4calc7ProductE
+...............2.
+...............N4calc6NumberE
+............+.
+............N4calc3AddE
+............5.
+............N4calc7ProductE
+...............5.
+...............N4calc6NumberE
+............+.
+............N4calc3AddE
+............ 3 * 4.
+............N4calc7ProductE
+....................3.
+....................N4calc6NumberE
+....................*.
+....................N4calc3MulE
+....................4.
+....................N4calc6NumberE
 ```
 ## How to build
 ### Requirements:
