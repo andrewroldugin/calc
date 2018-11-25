@@ -33,8 +33,7 @@ int main(int argc, char* argv[]) {
   peg::TextParser p;
   std::string s;
   while (std::getline(std::cin, s)) {
-    bool valid = p.Parse<calc::MathExpr>(s.c_str());
-    if (valid) {
+    if (p.Parse<calc::MathExpr>(s.c_str())) {
       std::cout << s << " = " << calc::EvalNode(p.ast_root()->child()) << endl;
       if (ast) calc::PrintNode(p.ast_root()->child());
     } else {
