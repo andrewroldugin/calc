@@ -5,14 +5,14 @@
 
 void calc::PrintNode(TextParser::Node* node, int offset) {
   while (node) {
-    PrintNode(node->child(),
-              offset + node->end() - node->begin() + 2);
     std::cout << std::string(offset, '.')
               << std::string(node->begin(), node->end())
               << "."
               << std::endl
               << std::string(offset, '.') << node->GetRuleTypeInfo().name()
               << std::endl;
+    PrintNode(node->child(),
+              offset + node->end() - node->begin() + 2);
     node = node->next();
   }
 }
