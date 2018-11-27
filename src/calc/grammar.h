@@ -32,7 +32,6 @@ namespace calc {
     }
   };
 
-  struct Digit;
   struct Space: Star<Or<Char<' '>, Char<'\t'> > > {};
   template <class R>
   struct Token: Seq<Space, R, Space> {};
