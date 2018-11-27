@@ -27,7 +27,7 @@ TEST(PegGrammarTest, Or) {
   EXPECT_FALSE((Or<False>::Match(p)));
   EXPECT_TRUE((Or<True<> >::Match(p)));
   EXPECT_TRUE((Or<False, True<> >::Match(p)));
-  EXPECT_TRUE((Or<True<> , False>::Match(p)));
+  EXPECT_TRUE((Or<True<>, False>::Match(p)));
   EXPECT_TRUE((Or<False, False, False, True<> >::Match(p)));
   EXPECT_FALSE((Or<False, False>::Match(p)));
   EXPECT_FALSE((Or<False, False, False, False>::Match(p)));
